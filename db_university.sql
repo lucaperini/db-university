@@ -22,18 +22,11 @@ SELECT COUNT(*) AS `numero_iscritti`, YEAR(`enrolment_date`) AS `anno` FROM `stu
 -- Contare gli insegnanti che hanno l'ufficio nello stesso edificio
 SELECT COUNT(*) AS `insegnanti`, `office_address` AS `edificio` FROM `teachers` GROUP BY `edificio`;
 -- Calcolare la media dei voti di ogni appello d'esame
+SELECT AVG(`vote`) AS `media_voti`, `exam_id` AS `appello` FROM `exam_student` GROUP BY `appello`; 
+-- Contare quanti corsi di laurea ci sono per ogni dipartimento
+SELECT COUNT(`id`) AS `corsi_di laurea`, `department_id` AS `dipartimento` FROM `degrees` GROUP BY `dipartimento`; 
 
-
-
-
-
-
-
-
-
-
-
-
+--- ###################################################################### ---
 
 -- phpMyAdmin SQL Dump
 -- version 4.9.5
