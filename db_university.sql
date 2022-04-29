@@ -2,29 +2,43 @@
 -- selezionare tutti gli studenti nati nel 1990
 SELECT * FROM `students` WHERE YEAR(`date_of_birth`) = 1990; 
 -- selezionare tutti i corsi che valgono più di 10 crediti
-SELECT * FROM `courses` WHERE `cfu` > '10';
+SELECT * FROM `courses` WHERE `cfu` > 10;
 -- selezionare tutti gli studenti che hanno più di 30 anni
 SELECT `name`, `surname`, `date_of_birth` FROM `students` WHERE YEAR (`date_of_birth`) <= 1992; 
 -- Selezionare tutti i corsi del primo semestre del primo anno di un qualsiasi corso di laurea
-SELECT * FROM `courses` WHERE `period` = 'I semestre' AND `year` = '1'; 
+SELECT * FROM `courses` WHERE `period` = "I semestre" AND `year` = 1; 
 -- Selezionare tutti gli appelli d'esame che avvengono nel pomeriggio dopo le 14 del 20/06/2020
-SELECT * FROM `exams` WHERE `hour` > '14:00' AND `date` = '2020/6/20';
+SELECT * FROM `exams` WHERE HOUR(`hour`) >= 14 AND `date` = '2020/6/20';
 -- Selezionare tutti i corsi di laurea magistrale
 SELECT `name` FROM `degrees` WHERE `level` = 'magistrale'; 
 -- Da quanti dipartimenti è composta l'università?
-SELECT `name`, `address` FROM `departments`;
+SELECT COUNT (*) FROM `departments`;
 -- Quanti sono gli insegnanti che non hanno un numero di telefono?
-SELECT * FROM `teachers` WHERE `phone` IS NULL;
+SELECT COUNT(*) `teachers` WHERE `phone` IS NULL;
 
 -- QUERY CON GROUP BY
 -- Contare quanti iscritti ci sono stati ogni anno
-SELECT COUNT(*) AS `numero_iscritti`, YEAR(`enrolment_date`) AS `anno` FROM `students` GROUP BY `anno`; 
+SELECT COUNT(`id`) AS `numero_iscritti`, YEAR(`enrolment_date`) AS `anno` FROM `students` GROUP BY `anno`; 
 -- Contare gli insegnanti che hanno l'ufficio nello stesso edificio
-SELECT COUNT(*) AS `insegnanti`, `office_address` AS `edificio` FROM `teachers` GROUP BY `edificio`;
+SELECT COUNT(`id`) AS `insegnanti`, `office_address` AS `edificio` FROM `teachers` GROUP BY `edificio`;
 -- Calcolare la media dei voti di ogni appello d'esame
 SELECT AVG(`vote`) AS `media_voti`, `exam_id` AS `appello` FROM `exam_student` GROUP BY `appello`; 
 -- Contare quanti corsi di laurea ci sono per ogni dipartimento
 SELECT COUNT(`id`) AS `corsi_di laurea`, `department_id` AS `dipartimento` FROM `degrees` GROUP BY `dipartimento`; 
+
+-- QUERY CON JOIN
+
+-- Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia
+SELECT `students` . `name` AS `nome`, `students`. `surname` AS `cognome`, `degrees` . `name` AS `corso_di_laurea`
+FROM `students`
+JOIN `degrees` ON `students` . `degree_id` = `degrees`. `id`
+WHERE `degrees`. `name` = "Corso di Laurea in Economia";
+-- Selezionare tutti i Corsi di Laurea del Dipartimento di Neuroscienze
+SELECT `degrees` . `name` AS `corso_di_laurea`, `departments`. `name` AS `dipartimento`
+FROM `departments`
+JOIN `degrees`
+ON `degrees`.`department_id` = `degrees`.`id`
+WHERE `departments` . `name` = 'dipartimento di neuroscienze';
 
 --- ###################################################################### ---
 
