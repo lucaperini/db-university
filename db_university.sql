@@ -39,6 +39,13 @@ FROM `departments`
 JOIN `degrees`
 ON `degrees`.`department_id` = `degrees`.`id`
 WHERE `departments` . `name` = 'dipartimento di neuroscienze';
+-- Selezionare tutti i corsi in cui insegna Fulvio Amato
+SELECT `teachers`. `name` AS `nome`, `teachers`. `surname` AS `cognome` , `courses`.`name` AS `corso`
+FROM `course_teacher`
+JOIN `courses` ON `courses`.`id` = `course_teacher`.`course_id`
+JOIN `teachers` ON `teachers`.`id` = `course_teacher`.`teacher_id`
+WHERE `teachers`.`id` = 44;
+--
 
 --- ###################################################################### ---
 
