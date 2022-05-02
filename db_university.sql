@@ -37,7 +37,7 @@ WHERE `degrees`. `name` = "Corso di Laurea in Economia";
 SELECT `degrees` . `name` AS `corso_di_laurea`, `departments`. `name` AS `dipartimento`
 FROM `departments`
 JOIN `degrees`
-ON `degrees`.`department_id` = `degrees`.`id`
+ON `degrees`.`department_id` = `departments`.`id`
 WHERE `departments` . `name` = 'dipartimento di neuroscienze';
 -- Selezionare tutti i corsi in cui insegna Fulvio Amato
 SELECT `teachers`. `name` AS `nome`, `teachers`. `surname` AS `cognome` , `courses`.`name` AS `corso`
@@ -49,13 +49,14 @@ WHERE `teachers`.`id` = 44;
 SELECT `students`.`surname` AS `cognome`, `students`.`name` AS `nome`, `students`.`enrolment_date` AS `iscrizione`, `degrees`.`name` AS `corso_di_laurea`, `departments`.`name` AS `dipartimento`
 FROM `students` 
 JOIN `departments` ON `departments`.`id` = `students`.`degree_id`
-JOIN `degrees` ON `degrees`.`department_id`= `students`.`degree_id`
-WHERE `students`.`enrolment_date` IS NOT NULL AND `students`.`surname`="Amato"
+JOIN `degrees` ON `degrees`.`department_id`= `departments`.`degree_id`
+WHERE `students`.`enrolment_date` IS NOT NULL
 ORDER BY surname ASC;
 -- Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
-SELECT `degrees`.name AS `corso di laurea`, `courses`.name AS `corso`, `teachers`.`name` AS `nome docente`, `teachers`.`surname` AS `cognome docente` FROM `courses`
-JOIN `degrees`ON `degrees`.`id`= `courses`.`degree_id`
-JOIN `teachers` ON `teachers`.`id` = `courses`.`degree_id`;
+SELECT `degrees`.`name`AS `corso di laurea`, `courses`.`name` AS `corso`, `teachers`.`name` AS `nome docente`, `teachers`.`surname` AS `cognome docente` FROM `degrees`
+JOIN `courses` ON `degrees`.`id`= `courses`.`degree_id`
+JOIN `course_teacher` ON `courses`.`id` = `course_teacher`. `course_id`
+JOIN `teachers` ON `teachers`.`id` = `course_teacher`.`teacher_id`;
 -- Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica
 SELECT DISTINCT `teachers`.*
 FROM `teachers`
